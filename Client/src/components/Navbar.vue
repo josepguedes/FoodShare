@@ -19,7 +19,7 @@ export default {
             unreadMessages: 0,
             isAdmin: false,
             isNotificationBoxOpen: false,
-            unreadMessages: 0
+            initialUserForMessages: null // Adicionar esta linha
         }
     },
     methods: {
@@ -51,7 +51,7 @@ export default {
                 if (this.user?.IdUtilizador) {
                     const details = await utilizadorService.getUserDetails(this.user.IdUtilizador);
                     this.userDetails = details;
-                    this.isAdmin = this.userDetails?.Funcao === 'admin'; // Verifica se o utilizador é admin
+                    this.isAdmin = this.userDetails?.Funcao === 'admin';
                 }
             } catch (error) {
                 console.error('Error fetching user details:', error);
@@ -60,7 +60,7 @@ export default {
         async markNotificationsAsRead() {
             try {
                 await notificacoesService.marcarTodasComoLidas();
-                this.userDetails.NotificacoesNaoLidas = 0; // Atualiza o estado local
+                this.userDetails.NotificacoesNaoLidas = 0;
             } catch (error) {
                 console.error('Erro ao marcar notificações como lidas:', error);
             }
@@ -94,6 +94,7 @@ export default {
         },
         closeMessagesSidebar() {
             this.isMessageSidebarOpen = false;
+            this.initialUserForMessages = null; // Limpar o utilizador ao fechar
         },
         toggleNotificationBox() {
             this.isNotificationBoxOpen = !this.isNotificationBoxOpen;
@@ -101,19 +102,23 @@ export default {
         closeNotificationBox() {
             this.isNotificationBoxOpen = false;
         },
+        handleOpenMessages(event) {
+            // Se a barra lateral já estiver a abrir ou aberta, não faz nada.
+            if (this.isMessageSidebarOpen) return;
+
+            if (event.detail && event.detail.otherUser) {
+                this.initialUserForMessages = event.detail.otherUser;
+            }
+            this.isMessageSidebarOpen = false;
+        },
     },
     created() {
         this.checkAuth(); // Verificação inicial
 
-        window.addEventListener('open-messages', (event) => {
-            this.isMessageSidebarOpen = true;
-            // Aqui você pode adicionar lógica para abrir a conversa específica
-        });
+        window.addEventListener('open-messages', this.handleOpenMessages);
 
         // Listener para mudanças de autenticação
-        window.addEventListener('auth-changed', () => {
-            this.checkAuth();
-        });
+        window.addEventListener('auth-changed', this.checkAuth);
 
         window.addEventListener('notifications-updated', this.updateUnreadNotifications);
 
@@ -128,7 +133,8 @@ export default {
         window.removeEventListener('auth-changed', this.checkAuth);
         window.removeEventListener('profile-updated', this.fetchUserDetails);
         document.removeEventListener('click', this.handleClickOutside);
-        window.removeEventListener('open-messages');
+        window.removeEventListener('open-messages', this.handleOpenMessages);
+        window.removeEventListener('notifications-updated', this.updateUnreadNotifications);
     }
 }
 </script>
@@ -221,7 +227,8 @@ export default {
     </nav>
 
     <!-- Barra lateral de mensagens -->
-    <MessagesSidebar :isOpen="isMessageSidebarOpen" @close="closeMessagesSidebar" />
+    <MessagesSidebar :isOpen="isMessageSidebarOpen" :initialUser="initialUserForMessages"
+        @close="closeMessagesSidebar" />
 </template>
 
 
