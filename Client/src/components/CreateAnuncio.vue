@@ -27,7 +27,7 @@
                             <div class="col-md-6">
                                 <label for="preco" class="form-label">Preço (€)</label>
                                 <input type="number" class="form-control" id="preco" v-model="formData.Preco"
-                                    step="0.01" min="0" max ="100" required>
+                                    step="0.01" min="0" max="100" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="quantidade" class="form-label">Quantidade</label>
@@ -128,8 +128,12 @@ export default {
     methods: {
         async fetchCategorias() {
             try {
-                const response = await produtoCategoriaService.getAllCategorias();
-                this.categorias = response.data;
+                const response = await produtoCategoriaService.getAllCategorias(1, 100);
+                if (response && response.data) {
+                    this.categorias = response.data;
+                } else {
+                    console.error('Resposta inválida ao buscar categorias:', response);
+                }
             } catch (error) {
                 console.error('Erro ao buscar categorias:', error);
             }
