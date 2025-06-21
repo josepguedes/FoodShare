@@ -67,7 +67,6 @@
             </div>
 
             <!-- Description -->
-            <!-- Description -->
             <div class="mb-4">
                 <h5 class="mb-3 fw-bold text-primary">
                     <i class="bi bi-file-text me-2"></i>Descrição
