@@ -81,27 +81,6 @@
       </div>
     </div>
   </div>
-  <div v-if="showPayment" class="payment-modal">
-    <div class="payment-overlay" @click="showPayment = false"></div>
-    <div class="payment-content">
-      <div class="payment-header">
-        <h3>Pagamento</h3>
-        <button class="btn-close" @click="showPayment = false"></button>
-      </div>
-      <div class="payment-body">
-        <div class="paypal-title">{{ reserva.Nome }}</div>
-        <div class="paypal-text">
-          <span>Total a Pagar</span>
-          <span>{{ formatPrice(reserva.Preco) }}</span>
-        </div>
-        <hr class="my-3">
-        <!-- Importante: Adicione um wrapper div -->
-        <div class="paypal-button-wrapper">
-          <div id="paypal-button-container"></div>
-        </div>
-      </div>
-    </div>
-  </div>
   <CreateEvaluationModal v-if="showEvaluationModal" :show="showEvaluationModal" :anuncio-id="reserva.IdAnuncio"
     :vendedor-id="reserva.IdUtilizadorAnuncio" @close="showEvaluationModal = false" @evaluated="onEvaluated" />
 </template>
@@ -253,6 +232,7 @@ export default {
         return;
       }
       try {
+        this.canEvaluate = true;
         const token = sessionStorage.getItem('token');
         const payload = JSON.parse(atob(token.split('.')[1]));
         // Busca avaliações do utilizador logado para este anúncio

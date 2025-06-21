@@ -101,6 +101,11 @@ export default {
             if (!this.anuncio) return [];
             return [
                 {
+                    icon: 'bi bi-geo-alt',
+                    label: 'Local de Recolha',
+                    value: this.anuncio.LocalRecolha
+                },
+                {
                     icon: 'bi bi-calendar-check',
                     label: 'Data de Validade',
                     value: this.formatDate(this.anuncio.DataValidade)

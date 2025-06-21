@@ -1,7 +1,7 @@
 const API_URL = 'http://localhost:3000';
 
 export const produtoCategoriaService = {
-    async getAllCategorias(page = 1, limit = 10) {
+    async getAllCategorias(page = 1, limit = 100) {
         try {
             const response = await fetch(`${API_URL}/categorias?page=${page}&limit=${limit}`, {
                 headers: {

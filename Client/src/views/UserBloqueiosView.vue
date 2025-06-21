@@ -67,17 +67,23 @@ export default {
                 this.error = null;
 
                 const token = sessionStorage.getItem('token');
-                if (!token) return;
+                if (!token) {
+                    this.$router.push('/login');
+                    return;
+                }
 
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                const response = await fetch(`http://localhost:3000/bloqueios/utilizador?idBloqueador=${payload.IdUtilizador}`);
+                const response = await fetch(`http://localhost:3000/bloqueios/utilizador?idBloqueador=${payload.IdUtilizador}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Add authorization header
+                    }
+                });
 
                 if (!response.ok) {
                     throw new Error('Erro ao carregar utilizadores bloqueados');
                 }
 
                 const data = await response.json();
-                // Garantir que os dados do usuário bloqueado estão acessíveis
                 this.bloqueios = data.data.map(bloqueio => ({
                     ...bloqueio,
                     bloqueado: {
@@ -88,7 +94,6 @@ export default {
                     DataBloqueio: bloqueio.DataBloqueio,
                     IdUtilizadoresBloqueados: bloqueio.IdUtilizadoresBloqueados
                 }));
-
             } catch (error) {
                 console.error('Error fetching blocked users:', error);
                 this.error = 'Erro ao carregar utilizadores bloqueados';
@@ -99,8 +104,17 @@ export default {
         async desbloquearUtilizador(idBloqueio) {
             if (confirm('Tem certeza que deseja desbloquear este utilizador?')) {
                 try {
+                    const token = sessionStorage.getItem('token');
+                    if (!token) {
+                        this.$router.push('/login');
+                        return;
+                    }
+
                     const response = await fetch(`http://localhost:3000/bloqueios/utilizador/${idBloqueio}`, {
-                        method: 'DELETE'
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
                     });
 
                     if (!response.ok) {

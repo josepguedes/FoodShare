@@ -37,12 +37,9 @@ export default {
     methods: {
         async fetchConversations() {
             try {
-                this.loading = true;
                 const token = sessionStorage.getItem('token');
-
                 if (!token) {
-                    this.conversations = [];
-                    this.error = null;
+                    this.error = 'Autenticação necessária';
                     this.loading = false;
                     return;
                 }
@@ -62,22 +59,87 @@ export default {
 
                 const data = await response.json();
 
-                if (data && data.data) { // Verificar se data e data.data existem
-                    this.conversations = data.data.sort((a, b) => {
+                if (data && data.data) {
+                    this.conversations = data.data.map(conversation => ({
+                        ...conversation,
+                        ultimaMensagem: {
+                            ...conversation.ultimaMensagem,
+                            timeAgo: this.calculateTimeAgo(conversation.ultimaMensagem.dataEnvio, conversation.ultimaMensagem.horaEnvio)
+                        }
+                    })).sort((a, b) => {
                         if (!a.ultimaMensagem || !b.ultimaMensagem) return 0;
                         const dateTimeA = new Date(`${a.ultimaMensagem.dataEnvio} ${a.ultimaMensagem.horaEnvio}`);
                         const dateTimeB = new Date(`${b.ultimaMensagem.dataEnvio} ${b.ultimaMensagem.horaEnvio}`);
-                        return dateTimeB.getTime() - dateTimeA.getTime(); // Ordenar do mais recente para o mais antigo
+                        return dateTimeB.getTime() - dateTimeA.getTime();
                     });
                 } else {
                     this.conversations = [];
                 }
-
             } catch (err) {
                 this.error = 'Erro ao carregar conversas';
                 console.error(err);
-            } finally {
-                this.loading = false;
+            }
+        },
+
+        calculateTimeAgo(date, time) {
+            if (!date || !time) return '';
+
+            const now = new Date();
+            const messageDate = new Date(`${date}T${time}`);
+
+            // Add timezone offset to handle server time correctly
+            const offset = messageDate.getTimezoneOffset();
+            messageDate.setMinutes(messageDate.getMinutes() - offset);
+
+            const timeDiff = now - messageDate;
+            const minutes = Math.floor(timeDiff / 60000);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            // More specific time display with smaller thresholds
+            if (days > 0) {
+                return `${days} dia${days > 1 ? 's' : ''} atrás`;
+            } else if (hours > 0) {
+                return `${hours} hora${hours > 1 ? 's' : ''} atrás`;
+            } else if (minutes > 1) {
+                return `${minutes} minuto${minutes > 1 ? 's' : ''} atrás`;
+            } else {
+                return 'agora mesmo';
+            }
+        },
+
+        // Add this method to update times periodically
+        startTimeUpdates() {
+            if (this.timeUpdateInterval) {
+                clearInterval(this.timeUpdateInterval);
+            }
+
+            // Update every 30 seconds
+            this.timeUpdateInterval = setInterval(() => {
+                if (this.conversations.length > 0) {
+                    this.conversations = this.conversations.map(conversation => {
+                        if (!conversation.ultimaMensagem) return conversation;
+
+                        return {
+                            ...conversation,
+                            ultimaMensagem: {
+                                ...conversation.ultimaMensagem,
+                                timeAgo: this.calculateTimeAgo(
+                                    conversation.ultimaMensagem.dataEnvio,
+                                    conversation.ultimaMensagem.horaEnvio
+                                )
+                            }
+                        };
+                    });
+                }
+            }, 30000); // Changed from 300 to 30000 (30 seconds)
+        },
+
+        // Add cleanup in beforeDestroy
+        beforeDestroy() {
+            this.stopPolling();
+            if (this.timeUpdateInterval) {
+                clearInterval(this.timeUpdateInterval);
             }
         },
         selectConversation(conversation) {
@@ -433,7 +495,7 @@ export default {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 const currentUserId = payload.IdUtilizador;
 
-                
+
                 if (this.isBlockedByMe) {
                     const checkResponse = await fetch(`http://localhost:3000/bloqueios/utilizador/check?idBloqueador=${currentUserId}&idBloqueado=${this.selectedUser.id}`, {
                         headers: {
@@ -444,7 +506,7 @@ export default {
                     if (!checkResponse.ok) {
                         throw new Error('Erro ao verificar o estado do bloqueio antes de desbloquear.');
                     }
-                    
+
                     const blockData = await checkResponse.json();
                     if (!blockData.bloqueado || !blockData.data?.IdUtilizadoresBloqueados) {
                         throw new Error('Não foi possível encontrar o bloqueio para remover.');
@@ -495,10 +557,10 @@ export default {
     },
 
     created() {
-        // Only fetch conversations if user is logged in
         const token = sessionStorage.getItem('token');
         if (token) {
             this.fetchConversations();
+            this.startTimeUpdates();
         }
     },
     mounted() {
@@ -685,6 +747,7 @@ export default {
                 <div v-else-if="conversations.length === 0" class="text-center p-3 text-muted">
                     Nenhuma conversa encontrada
                 </div>
+                <!-- Your code snippet is already here -->
                 <div v-else v-for="conversation in conversations" :key="conversation.otherUser.id"
                     class="conversation-item p-3 border-bottom" @click="selectConversation(conversation)">
                     <div class="d-flex align-items-center">

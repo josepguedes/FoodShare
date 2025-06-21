@@ -38,10 +38,6 @@
                                         ({{ anuncio.utilizador?.Classificacao?.toFixed(1) || '0.0' }})
                                     </small>
                                 </div>
-                                <p class="mb-0 text-muted small mt-1">
-                                    <i class="bi bi-geo-alt-fill me-1"></i>
-                                    {{ anuncio.LocalRecolha }}
-                                </p>
                             </div>
                             <button v-if="showMessageButton" @click="startConversation"
                                 class="btn btn-outline-primary btn-sm message-btn">
@@ -143,6 +139,11 @@ export default {
             if (!this.anuncio) return [];
             return [
                 {
+                    icon: 'bi bi-geo-alt',
+                    label: 'Local de Recolha',
+                    value: this.anuncio.LocalRecolha
+                },
+                {
                     icon: 'bi bi-calendar-check',
                     label: 'Data de Validade',
                     value: this.formatDate(this.anuncio.DataValidade)
@@ -164,7 +165,7 @@ export default {
                 },
                 {
                     icon: 'bi bi-calendar-plus',
-                    label: 'Publicado',
+                    label: 'Publicado em',
                     value: this.formatDate(this.anuncio.DataAnuncio)
                 }
             ];
