@@ -368,16 +368,24 @@ export default {
             return groups;
         },
         formatMessageDate(date) {
+            // Ajusta o fuso horário para Lisboa/Portugal
+            const options = { timeZone: 'Europe/Lisbon' };
+
             const today = new Date();
             const yesterday = new Date(today);
             yesterday.setDate(yesterday.getDate() - 1);
 
-            if (date.toDateString() === today.toDateString()) {
+            // Converte a data recebida para o fuso horário de Portugal
+            const messageDate = new Date(date.toLocaleString('pt-PT', options));
+            const todayDate = new Date(today.toLocaleString('pt-PT', options));
+            const yesterdayDate = new Date(yesterday.toLocaleString('pt-PT', options));
+
+            if (messageDate.toDateString() === todayDate.toDateString()) {
                 return 'Hoje';
-            } else if (date.toDateString() === yesterday.toDateString()) {
+            } else if (messageDate.toDateString() === yesterdayDate.toDateString()) {
                 return 'Ontem';
             } else {
-                return date.toLocaleDateString('pt-BR');
+                return messageDate.toLocaleDateString('pt-PT');
             }
         },
         async checkBlockStatus() {
@@ -433,7 +441,7 @@ export default {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 const currentUserId = payload.IdUtilizador;
 
-                
+
                 if (this.isBlockedByMe) {
                     const checkResponse = await fetch(`http://localhost:3000/bloqueios/utilizador/check?idBloqueador=${currentUserId}&idBloqueado=${this.selectedUser.id}`, {
                         headers: {
@@ -444,7 +452,7 @@ export default {
                     if (!checkResponse.ok) {
                         throw new Error('Erro ao verificar o estado do bloqueio antes de desbloquear.');
                     }
-                    
+
                     const blockData = await checkResponse.json();
                     if (!blockData.bloqueado || !blockData.data?.IdUtilizadoresBloqueados) {
                         throw new Error('Não foi possível encontrar o bloqueio para remover.');
