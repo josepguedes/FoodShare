@@ -258,49 +258,73 @@ Projeto-2/
 http://localhost:3000
 ```
 
-### Main Endpoints
+### API Endpoints
 
 #### Authentication & Users
-- `POST /utilizadores/register` - Register new user
-- `POST /utilizadores/login` - User login
-- `GET /utilizadores/profile` - Get user profile
-- `PUT /utilizadores/profile` - Update user profile
-- `POST /utilizadores/confirm-code` - Confirm user verification code
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| POST | `/utilizadores/register` | Register new user | No |
+| POST | `/utilizadores/login` | User login | No |
+| GET | `/utilizadores/profile` | Get user profile | Required |
+| PUT | `/utilizadores/profile` | Update user profile | Required |
+| POST | `/utilizadores/confirm-code` | Confirm user verification code | No |
 
 #### Advertisements (Anuncios)
-- `GET /anuncios` - Get all advertisements
-- `GET /anuncios/:id` - Get advertisement by ID
-- `POST /anuncios` - Create new advertisement (authenticated)
-- `PUT /anuncios/:id` - Update advertisement (authenticated)
-- `DELETE /anuncios/:id` - Delete advertisement (authenticated)
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| GET | `/anuncios` | Get all advertisements | No |
+| GET | `/anuncios/:id` | Get advertisement by ID | No |
+| POST | `/anuncios` | Create new advertisement | Required |
+| PUT | `/anuncios/:id` | Update advertisement | Required |
+| DELETE | `/anuncios/:id` | Delete advertisement | Required |
 
 #### Ratings (Avaliacoes)
-- `GET /avaliacoes` - Get all ratings
-- `GET /avaliacoes/:id` - Get rating by ID
-- `POST /avaliacoes` - Create new rating (authenticated)
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| GET | `/avaliacoes` | Get all ratings | No |
+| GET | `/avaliacoes/:id` | Get rating by ID | No |
+| POST | `/avaliacoes` | Create new rating | Required |
 
 #### Reports (Denuncias)
-- `GET /denuncias` - Get all reports (admin)
-- `POST /denuncias` - Create new report (authenticated)
-- `PUT /denuncias/:id` - Update report status (admin)
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| GET | `/denuncias` | Get all reports | Admin |
+| POST | `/denuncias` | Create new report | Required |
+| PUT | `/denuncias/:id` | Update report status | Admin |
 
 #### Messages (Mensagens)
-- `GET /mensagens` - Get user messages (authenticated)
-- `POST /mensagens` - Send message (authenticated)
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| GET | `/mensagens` | Get user messages | Required |
+| POST | `/mensagens` | Send message | Required |
 
 #### Notifications (Notificacoes)
-- `GET /notificacoes` - Get user notifications (authenticated)
-- `PUT /notificacoes/:id` - Mark notification as read (authenticated)
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| GET | `/notificacoes` | Get user notifications | Required |
+| PUT | `/notificacoes/:id` | Mark notification as read | Required |
 
 #### Blocks (Bloqueios)
-- `GET /bloqueios` - Get user blocks (authenticated)
-- `POST /bloqueios` - Block a user (authenticated)
-- `DELETE /bloqueios/:id` - Unblock a user (authenticated)
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| GET | `/bloqueios` | Get user blocks | Required |
+| POST | `/bloqueios` | Block a user | Required |
+| DELETE | `/bloqueios/:id` | Unblock a user | Required |
 
 #### Categories (Categorias)
-- `GET /categorias` - Get all product categories
 
-> **Note**: All authenticated endpoints require a valid JWT token in the Authorization header:
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| GET | `/categorias` | Get all product categories | No |
+
+> **Note**: Endpoints marked with "Required" need a valid JWT token in the Authorization header:
 > ```
 > Authorization: Bearer <token>
 > ```
