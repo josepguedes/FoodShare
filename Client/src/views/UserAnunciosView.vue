@@ -90,7 +90,7 @@ export default {
             confirmCodeAnuncioId: null,
             currentPage: 1,
             totalPages: 1, // Add this line
-            itemsPerPage: 12 // Add this line
+            itemsPerPage: 9 // Add this line
         }
     },
     methods: {

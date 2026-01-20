@@ -91,12 +91,25 @@ export default {
         },
         async handleSubmit() {
             if (this.isBlocking) return;
+            
+            // Validar campos obrigatórios para bloqueio temporário
+            if (!this.isBlocked && this.blockType === 'temporary' && !this.endDate) {
+                alert('Por favor, selecione uma data de término para o bloqueio temporário.');
+                return;
+            }
+            
             this.isBlocking = true;
             try {
-                await this.blockUser(this.userId);
-                this.$emit('blocked');
+                // Emitir dados do formulário para o componente pai
+                const blockData = {
+                    blockType: this.blockType,
+                    endDate: this.blockType === 'temporary' ? this.endDate : null
+                };
+                
+                this.$emit('submit', blockData);
             } catch (error) {
-                this.$toast.error('Erro ao bloquear usuário');
+                console.error('Erro no handleSubmit:', error);
+                alert('Erro ao processar bloqueio');
             } finally {
                 this.isBlocking = false;
             }
