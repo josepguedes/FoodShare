@@ -19,10 +19,13 @@ const allowedOrigins = [
     'https://food-share-8i559u53x-jose-guedes-projects.vercel.app'
 ];
 
+const isVercelPreview = (origin) =>
+    /^https:\/\/food-share(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
+
 
 app.use(cors({
     origin(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin) || process.env.CORS_ORIGIN === origin) {
+        if (!origin || allowedOrigins.includes(origin) || isVercelPreview(origin) || process.env.CORS_ORIGIN === origin) {
             return callback(null, true);
         }
         return callback(new Error('Origin not allowed by CORS'));
