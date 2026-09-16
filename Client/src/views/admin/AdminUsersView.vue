@@ -1,7 +1,6 @@
 <template>
     <div class="admin-users-page d-flex">
         <!-- Admin Sidebar -->
-        <AdminSidebar v-if="userDetails" active="admin-denuncias" :userDetails="userDetails" />
 
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 content">
@@ -95,7 +94,6 @@
 </template>
 
 <script>
-import AdminSidebar from '@/components/AdminSidebar.vue';
 import AdminUserDetails from '@/components/AdminUserDetails.vue';
 import { utilizadorService } from '@/api/utilizador';
 import { adminBloqueiosService } from '@/api/adminBloqueios';
@@ -104,7 +102,6 @@ import AdminBlockModal from '@/components/AdminBlockModal.vue';
 export default {
     name: 'AdminUsersView',
     components: {
-        AdminSidebar,
         AdminUserDetails,
         AdminBlockModal
     },

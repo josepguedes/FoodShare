@@ -1,7 +1,6 @@
 <template>
     <div class="admin-denuncias-page d-flex">
         <!-- Admin Sidebar -->
-        <AdminSidebar v-if="userDetails" active="admin-denuncias" :userDetails="userDetails" />
 
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 content">
@@ -70,15 +69,11 @@
 </template>
 
 <script>
-import AdminSidebar from '@/components/AdminSidebar.vue';
 import { denunciasService } from '@/api/denuncia';
 import { utilizadorService } from '@/api/utilizador';
 
 export default {
     name: 'AdminDenunciasView',
-    components: {
-        AdminSidebar
-    },
     data() {
         return {
             denuncias: [],

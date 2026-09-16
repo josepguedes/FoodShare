@@ -86,7 +86,7 @@ const getAllUtilizadorBloqueios = async (req, res, next) => {
 
     // 4. Check if any blocks were found
     if (bloqueios.count === 0) {
-      return res.status(204).json({
+      return res.status(200).json({
         message: "Nenhum bloqueio encontrado",
         totalPages: 0,
         currentPage: +page,

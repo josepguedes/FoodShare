@@ -1,7 +1,6 @@
 <template>
     <div class="admin-notificacoes-page d-flex">
         <!-- Admin Sidebar -->
-        <AdminSidebar v-if="userDetails" active="admin-denuncias" :userDetails="userDetails" />
 
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 content">
@@ -72,15 +71,11 @@
 </template>
 
 <script>
-import AdminSidebar from '@/components/AdminSidebar.vue';
 import { utilizadorService } from '@/api/utilizador';
 import { notificacoesService } from '@/api/notificacoes';
 
 export default {
     name: 'AdminNotificacoesView',
-    components: {
-        AdminSidebar
-    },
     data() {
         return {
             userDetails: null,

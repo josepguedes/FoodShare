@@ -44,7 +44,7 @@ export default {
     props: {
         userDetails: {
             type: Object,
-            required: true
+            default: () => ({})
         }
     },
     computed: {

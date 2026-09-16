@@ -13,6 +13,7 @@ import AdminReservas from "../views/admin/AdminReservasView.vue";
 import AdminNotificaçoes from "../views/admin/AdminNotificaçoesView.vue";
 import AdminDenuncias from "../views/admin/AdminDenunciasView.vue";
 import AdminCategorias from "../views/admin/AdminCategoriasView.vue";
+import AdminLayout from "../views/admin/AdminLayout.vue";
 import UserBloqueadosView from "../views/UserBloqueiosView.vue";
 
 const router = createRouter({
@@ -54,39 +55,17 @@ const router = createRouter({
       component: UserReservasView,
     },
     {
-      path: "/admin/anuncios",
-      name: "admin-anuncios",
-      component: AdminAnuncios,
-    },
-    {
-      path: "/admin/utilizadores",
-      name: "admin-utilizadores",
-      component: AdminUtilizadores,
-    },
-    {
-      path: "/admin/avaliacoes",
-      name: "admin-avaliacoes",
-      component: AdminAvaliaçoes,
-    },
-    {
-      path: "/admin/reservas",
-      name: "admin-reservas",
-      component: AdminReservas,
-    },
-    {
-      path: "/admin/notificacoes",
-      name: "admin-notificacoes",
-      component: AdminNotificaçoes,
-    },
-    {
-      path: "/admin/denuncias",
-      name: "admin-denuncias",
-      component: AdminDenuncias,
-    },
-    {
-      path: "/admin/categorias",
-      name: "admin-categorias",
-      component: AdminCategorias,
+      path: "/admin",
+      component: AdminLayout,
+      children: [
+        { path: "anuncios", name: "admin-anuncios", component: AdminAnuncios },
+        { path: "utilizadores", name: "admin-utilizadores", component: AdminUtilizadores },
+        { path: "avaliacoes", name: "admin-avaliacoes", component: AdminAvaliaçoes },
+        { path: "reservas", name: "admin-reservas", component: AdminReservas },
+        { path: "notificacoes", name: "admin-notificacoes", component: AdminNotificaçoes },
+        { path: "denuncias", name: "admin-denuncias", component: AdminDenuncias },
+        { path: "categorias", name: "admin-categorias", component: AdminCategorias },
+      ],
     },
     {
       path: "/user/bloqueados",

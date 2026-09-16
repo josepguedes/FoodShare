@@ -3,7 +3,7 @@
         <!-- Empty State -->
         <div v-if="!bloqueios || bloqueios.length === 0" class="d-flex flex-column align-items-center justify-content-center py-5 text-secondary">
             <i class="bi bi-slash-circle display-4 mb-3"></i>
-            <span class="fs-5">Nenhum utilizador bloqueado encontrado.</span>
+            <span class="fs-5">Ainda não bloqueaste nenhum utilizador.</span>
             <small class="mt-1">Os utilizadores bloqueados aparecerão aqui.</small>
         </div>
 

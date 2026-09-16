@@ -1,18 +1,18 @@
 <template>
-    <div class="anuncios-page">
-        <div class="container py-5 forms">
-            <div class="row">
-                <div class="col-lg-3 mb-4 sidebar">
-                    <UserSidebar :userDetails="userDetails" />
+    <div class="user-section-page anuncios-page">
+        <UserSidebar :userDetails="userDetails" />
+        <main class="user-section-content">
+            <div class="user-section-header">
+                <div>
+                    <h1 class="user-section-title">Meus Anúncios</h1>
+                    <p class="user-section-subtitle">Gere os produtos que partilhaste com a comunidade.</p>
                 </div>
-                <div class="col-lg-12 offset-lg-1">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2>Meus Anúncios</h2>
                         <button class="btn btn-primary" @click="openCreateModal">
                             <i class="bi bi-plus-lg me-2"></i>Criar Anúncio
                         </button>
-                    </div>
+            </div>
 
+            <section class="user-section-surface">
                     <AnuncioList :anuncios="anuncios" :loading="loading" :error="error" @delete="deleteAnuncio"
                         @view-details="openDetails" @edit="openEditModal" @confirm-code="openConfirmCodeModal" />
 
@@ -38,9 +38,8 @@
                     <UserAnuncioEdit v-if="showEdit" :anuncio="selectedAnuncio" :show="showEdit" @close="closeEditModal"
                         @updated="handleAnuncioEditado" />
 
-                </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
         <!-- Modal de Detalhes -->
         <UserAnuncioDetails v-if="selectedAnuncio" :anuncio="selectedAnuncio" :show="showDetails"
@@ -211,36 +210,9 @@ export default {
 </script>
 <style scoped>
 .anuncios-page {
-    padding-top: 80px;
-    min-height: 100vh;
     background-color: #f8f9fa;
 }
 
-.forms {
-    margin-top: 0;
-}
-
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    min-height: 100%;
-}
-
-@media (max-width: 991.98px) {
-    .sidebar {
-        margin-bottom: 2rem;
-    }
-
-    .col-lg-3 {
-        margin-bottom: 2rem;
-    }
-}
-
-h2 {
-    color: #333;
-    font-weight: 600;
-}
 
 .reservas-page {
     padding-top: 80px;

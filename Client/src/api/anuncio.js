@@ -48,6 +48,9 @@ export const anunciosService = {
     const response = await fetch(
       `${API_URL}/anuncios/utilizador/${userId}?${queryParams}`
     );
+    if (response.status === 404) {
+      return { totalPages: 0, currentPage: page, total: 0, data: [] };
+    }
     if (!response.ok) {
       throw new Error("Erro ao buscar anúncios do utilizador");
     }
@@ -231,6 +234,9 @@ export const anunciosService = {
         },
       }
     );
+    if (response.status === 404) {
+      return { totalPages: 0, currentPage: page, total: 0, data: [] };
+    }
     if (!response.ok) {
       throw new Error("Erro ao buscar reservas do utilizador");
     }

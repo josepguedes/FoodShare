@@ -1,10 +1,15 @@
 <template>
-    <div class="user-bloqueios-page d-flex">
-        <UserSidebar v-if="userDetails" :userDetails="userDetails" />
+    <div class="user-section-page user-bloqueios-page">
+        <UserSidebar :userDetails="userDetails" />
 
         <!-- Main Content -->
-        <div class="flex-grow-1 p-4 content">
-            <h2 class="mb-4 fw-bold text-primary">Utilizadores Bloqueados</h2>
+        <main class="user-section-content">
+            <div class="user-section-header">
+                <div>
+                    <h1 class="user-section-title">Utilizadores Bloqueados</h1>
+                    <p class="user-section-subtitle">Gere as pessoas que não podem contactar contigo.</p>
+                </div>
+            </div>
 
             <!-- Loading State -->
             <div v-if="loading" class="text-center py-5">
@@ -19,10 +24,10 @@
             </div>
 
             <!-- UserBloqueadosList Component -->
-            <div v-else class="table-responsive bg-white rounded shadow-sm p-3">
+            <div v-else class="user-section-surface">
                 <UserBloqueadosList :bloqueios="bloqueios" @desbloquear="desbloquearUtilizador" />
             </div>
-        </div>
+        </main>
     </div>
 </template>
 
@@ -40,7 +45,7 @@ export default {
     data() {
         return {
             userDetails: null,
-            bloqueios: null, // Inicialmente null em vez de array vazio
+            bloqueios: [],
             loading: true,
             error: null
         }
@@ -83,8 +88,13 @@ export default {
                     throw new Error('Erro ao carregar utilizadores bloqueados');
                 }
 
+                if (response.status === 204) {
+                    this.bloqueios = [];
+                    return;
+                }
+
                 const data = await response.json();
-                this.bloqueios = data.data.map(bloqueio => ({
+                this.bloqueios = (data.data || []).map(bloqueio => ({
                     ...bloqueio,
                     bloqueado: {
                         ...bloqueio.bloqueado,
@@ -157,27 +167,7 @@ export default {
 
 <style scoped>
 .user-bloqueios-page {
-    min-height: 100vh;
     background: #f8f9fa;
-    display: flex;
-    width: 100%;
-    padding-bottom: 100px;
-}
-
-.content {
-    margin-left: 270px;
-    /* Largura do sidebar */
-    flex: 1;
-    padding: 2rem;
-    margin-top: 80px;
-    /* Espaço para a navbar */
-}
-
-.table-responsive {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-top: 1rem;
 }
 
 .table th,
@@ -194,12 +184,4 @@ export default {
     color: white;
 }
 
-@media (max-width: 768px) {
-    .content {
-        margin-left: 0;
-        padding: 1rem;
-        margin-top: 60px;
-        /* Ajustado para telas menores */
-    }
-}
 </style>

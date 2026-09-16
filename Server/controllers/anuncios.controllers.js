@@ -670,9 +670,12 @@ const getAnunciosByUser = async (req, res, next) => {
 
     // Se não encontrar anúncios
     if (!rows || rows.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhum anúncio encontrado para este utilizador" });
+      return res.status(200).json({
+        totalPages: 0,
+        currentPage: +page || 1,
+        total: 0,
+        data: [],
+      });
     }
 
     // Resposta
@@ -806,9 +809,12 @@ const getReservasByUser = async (req, res, next) => {
 
     // Se não encontrar reservas
     if (!rows || rows.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhuma reserva encontrada para este utilizador" });
+      return res.status(200).json({
+        totalPages: 0,
+        currentPage: +page || 1,
+        total: 0,
+        data: [],
+      });
     }
 
     res.status(200).json({

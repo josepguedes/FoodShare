@@ -1,7 +1,6 @@
 <template>
     <div class="admin-anuncios-page d-flex">
         <!-- Admin Sidebar -->
-        <AdminSidebar v-if="userDetails" active="admin-denuncias" :userDetails="userDetails" />
 
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 content">
@@ -88,7 +87,6 @@
 </template>
 
 <script>
-import AdminSidebar from '@/components/AdminSidebar.vue';
 import AdminUserDetails from '@/components/AdminUserDetails.vue';
 import { anunciosService } from '@/api/anuncio';
 import { utilizadorService } from '@/api/utilizador';
@@ -96,7 +94,6 @@ import { utilizadorService } from '@/api/utilizador';
 export default {
     name: 'AdminAnunciosView',
     components: {
-        AdminSidebar,
         AdminUserDetails
     },
     data() {

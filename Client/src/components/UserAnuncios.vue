@@ -12,8 +12,8 @@
         </div>
 
         <div v-else-if="anuncios.length === 0" class="text-center py-5">
-            <i class="bi bi-clipboard-x display-1 text-muted"></i>
-            <p class="mt-3 text-muted">Você ainda não possui anúncios publicados.</p>
+            <i class="bi bi-megaphone display-1 text-muted"></i>
+            <p class="mt-3 text-muted">Ainda não tens anúncios publicados.</p>
         </div>
 
         <div v-else class="row g-4 justify-content-start">

@@ -1,7 +1,6 @@
 <template>
     <div class="admin-reservas-page d-flex">
         <!-- Admin Sidebar -->
-        <AdminSidebar v-if="userDetails" active="admin-denuncias" :userDetails="userDetails" />>
 
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 content">
@@ -85,15 +84,11 @@
 </template>
 
 <script>
-import AdminSidebar from '@/components/AdminSidebar.vue';
 import { utilizadorService } from '@/api/utilizador';
 import { anunciosService } from '@/api/anuncio';
 
 export default {
     name: 'AdminReservasView',
-    components: {
-        AdminSidebar
-    },
     data() {
         return {
             reservas: [],

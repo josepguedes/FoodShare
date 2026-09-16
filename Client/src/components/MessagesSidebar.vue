@@ -11,6 +11,10 @@ export default {
         isOpen: {
             type: Boolean,
             default: false
+        },
+        initialUser: {
+            type: Object,
+            default: null
         }
     },
     data() {
@@ -691,7 +695,8 @@ export default {
                     </div>
                 </div>
                 <div v-else-if="conversations.length === 0" class="text-center p-3 text-muted">
-                    Nenhuma conversa encontrada
+                    <i class="bi bi-chat-square-text display-6 d-block mb-2"></i>
+                    <span>Ainda não tens conversas.</span>
                 </div>
                 <div v-else v-for="conversation in conversations" :key="conversation.otherUser.id"
                     class="conversation-item p-3 border-bottom" @click="selectConversation(conversation)">

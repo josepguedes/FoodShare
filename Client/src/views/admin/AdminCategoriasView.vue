@@ -1,6 +1,5 @@
 <template>
     <div class="admin-categorias-page d-flex">
-        <AdminSidebar v-if="userDetails" active="admin-denuncias" :userDetails="userDetails" />
 
         <div class="flex-grow-1 p-4 content">
             <h2 class="mb-4 fw-bold text-primary">Gestão de Categorias</h2>
@@ -98,7 +97,6 @@
 </template>
 
 <script>
-import AdminSidebar from '@/components/AdminSidebar.vue';
 import { utilizadorService } from '@/api/utilizador';
 import { produtoCategoriaService } from '@/api/produtoCategoria';
 import { Modal } from 'bootstrap';
@@ -106,9 +104,6 @@ import { Modal } from 'bootstrap';
 
 export default {
     name: 'AdminCategoriasView',
-    components: {
-        AdminSidebar
-    },
     data() {
         return {
             categorias: [],

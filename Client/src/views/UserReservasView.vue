@@ -1,15 +1,14 @@
 <template>
-    <div class="reservas-page">
-        <div class="container py-5 forms">
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-lg-3 mb-4 sidebar">
-                    <UserSidebar :userDetails="userDetails" />
+    <div class="user-section-page reservas-page">
+        <UserSidebar :userDetails="userDetails" />
+        <main class="user-section-content">
+            <div class="user-section-header">
+                <div>
+                    <h1 class="user-section-title">Minhas Reservas</h1>
+                    <p class="user-section-subtitle">Acompanha os produtos que reservaste.</p>
                 </div>
-
-                <!-- Conteúdo principal -->
-                <div class="col-lg-8">
-                    <h2 class="mb-4">Minhas Reservas</h2>
+            </div>
+            <section class="user-section-surface">
                     <div v-if="loading" class="text-center py-5">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Carregando...</span>
@@ -18,9 +17,9 @@
                     <div v-else-if="error" class="alert alert-danger">
                         {{ error }}
                     </div>
-                    <div v-else-if="reservas.length === 0" class="text-center py-5">
-                        <i class="bi bi-calendar-x display-1 text-muted"></i>
-                        <p class="mt-3 text-muted">Você ainda não possui reservas realizadas.</p>
+                    <div v-else-if="reservas.length === 0" class="user-empty-state">
+                        <i class="bi bi-calendar-heart"></i>
+                        <p class="mt-3 mb-0">Ainda não tens reservas.</p>
                         <router-link to="/" class="btn btn-primary mt-3">
                             Explorar Anúncios
                         </router-link>
@@ -33,9 +32,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+            </section>
+        </main>
     </div>
 </template>
 
@@ -134,17 +132,6 @@ export default {
 
 <style scoped>
 .reservas-page {
-    padding-top: 80px;
-    min-height: 100vh;
     background-color: #f8f9fa;
-}
-
-.forms {
-    margin-top: 20px;
-}
-
-h2 {
-    color: #333;
-    font-weight: 600;
 }
 </style>
