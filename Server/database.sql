@@ -91,11 +91,15 @@ CREATE TABLE IF NOT EXISTS avaliacao (
 
 CREATE TABLE IF NOT EXISTS denuncia (
   IdDenuncia INT NOT NULL AUTO_INCREMENT,
+  IdAnuncio INT NULL,
   IdUtilizadorDenunciado INT NOT NULL,
   DataDenuncia DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Motivo VARCHAR(255) NOT NULL,
   PRIMARY KEY (IdDenuncia),
+  KEY idx_denuncia_anuncio (IdAnuncio),
   KEY idx_denuncia_utilizador (IdUtilizadorDenunciado),
+  CONSTRAINT fk_denuncia_anuncio
+    FOREIGN KEY (IdAnuncio) REFERENCES anuncio (IdAnuncio),
   CONSTRAINT fk_denuncia_utilizador
     FOREIGN KEY (IdUtilizadorDenunciado) REFERENCES utilizador (IdUtilizador)
 ) ENGINE=InnoDB;

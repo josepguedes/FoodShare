@@ -29,7 +29,7 @@ const sequelize = new Sequelize(
         console.log('Connection to the database has been established successfully.');
 
         // Sync all models
-        await sequelize.sync({ alter: true }); // Use { force: true } only in development
+        await sequelize.sync({ alter: process.env.NODE_ENV !== 'production' });
         console.log('Database synchronized');
     } catch (error) {
         console.error('❌ Unable to connect to the database:', error);
