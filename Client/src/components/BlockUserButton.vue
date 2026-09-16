@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { API_URL } from '@/api/config';
 export default {
     name: 'BlockUserButton',
     props: {
@@ -41,13 +42,13 @@ export default {
 
                 if (this.isBlocked) {
                     // Desbloquear
-                    const response = await fetch(`http://localhost:3000/bloqueios/utilizador/${this.userId}`, {
+                    const response = await fetch(`${API_URL}/bloqueios/utilizador/${this.userId}`, {
                         method: 'DELETE'
                     });
                     if (!response.ok) throw new Error('Erro ao desbloquear utilizador');
                 } else {
                     // Bloquear
-                    const response = await fetch('http://localhost:3000/bloqueios/utilizador', {
+                    const response = await fetch(`${API_URL}/bloqueios/utilizador`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

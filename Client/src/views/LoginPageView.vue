@@ -19,6 +19,8 @@
     </div>
 </template>
 <script>
+import { API_URL } from '@/api/config';
+
 export default {
     name: "LoginPageView",
     data() {
@@ -31,7 +33,7 @@ export default {
     methods: {
         async checkAdminBlock(userId) {
             try {
-                const response = await fetch(`http://localhost:3000/bloqueios/admin/check/${userId}`);
+                const response = await fetch(`${API_URL}/bloqueios/admin/check/${userId}`);
                 if (!response.ok) {
                     throw new Error('Erro ao verificar bloqueio');
                 }
@@ -58,7 +60,7 @@ export default {
                 return;
             }
             try {
-                const response = await fetch("http://localhost:3000/utilizadores/login", {
+                const response = await fetch(`${API_URL}/utilizadores/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

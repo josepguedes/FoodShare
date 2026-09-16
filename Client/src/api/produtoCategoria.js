@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+import { API_URL } from './config';
 
 export const produtoCategoriaService = {
     async getAllCategorias(page = 1, limit = 100) {

@@ -1,10 +1,10 @@
-const API_URL = "http://localhost:3000";
+import { API_URL } from './config';
 
 export const adminBloqueiosService = {
     async checkAdminBlock(userId) {
         try {
             const token = sessionStorage.getItem("token");
-            const response = await fetch(`http://localhost:3000/bloqueios/admin/check/${userId}`, {
+            const response = await fetch(`${API_URL}/bloqueios/admin/check/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

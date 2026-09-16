@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+import { API_URL } from './config';
 
 export const bloqueiosService = {
   async getUserBloqueios(idBloqueador, page = 1, limit = 10) {

@@ -1,5 +1,6 @@
 <script>
 import DenunciaModal from './DenunciaModal.vue';
+import { API_URL } from '@/api/config';
 
 export default {
     name: 'MessagesSidebar',
@@ -54,7 +55,7 @@ export default {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 this.currentUserId = payload.IdUtilizador;
 
-                const response = await fetch(`http://localhost:3000/mensagens/conversations/${this.currentUserId}`, {
+                const response = await fetch(`${API_URL}/mensagens/conversations/${this.currentUserId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -120,7 +121,7 @@ export default {
                         // Fetch new messages without changing loading state
                         const token = sessionStorage.getItem('token');
                         const response = await fetch(
-                            `http://localhost:3000/mensagens?idRemetente=${this.currentUserId}&idDestinatario=${this.activeConversation.otherUser.id}&page=${this.currentPage}`,
+                            `${API_URL}/mensagens?idRemetente=${this.currentUserId}&idDestinatario=${this.activeConversation.otherUser.id}&page=${this.currentPage}`,
                             {
                                 headers: {
                                     'Authorization': `Bearer ${token}`
@@ -185,7 +186,7 @@ export default {
                 }
 
                 const response = await fetch(
-                    `http://localhost:3000/mensagens?idRemetente=${this.currentUserId}&idDestinatario=${this.activeConversation.otherUser.id}&page=${this.currentPage}`,
+                    `${API_URL}/mensagens?idRemetente=${this.currentUserId}&idDestinatario=${this.activeConversation.otherUser.id}&page=${this.currentPage}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -234,7 +235,7 @@ export default {
                     return;
                 }
 
-                const response = await fetch('http://localhost:3000/mensagens', {
+                const response = await fetch(`${API_URL}/mensagens`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -293,7 +294,7 @@ export default {
                     (container.scrollHeight - container.scrollTop - container.clientHeight < 100) :
                     false;
 
-                const response = await fetch(`http://localhost:3000/mensagens/${messageId}`, {
+                const response = await fetch(`${API_URL}/mensagens/${messageId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -401,8 +402,8 @@ export default {
 
                 // Verificar bloqueio em ambas as direções
                 const [response1, response2] = await Promise.all([
-                    fetch(`http://localhost:3000/bloqueios/utilizador/check?idBloqueador=${payload.IdUtilizador}&idBloqueado=${this.activeConversation.otherUser.id}`),
-                    fetch(`http://localhost:3000/bloqueios/utilizador/check?idBloqueador=${this.activeConversation.otherUser.id}&idBloqueado=${payload.IdUtilizador}`)
+                    fetch(`${API_URL}/bloqueios/utilizador/check?idBloqueador=${payload.IdUtilizador}&idBloqueado=${this.activeConversation.otherUser.id}`),
+                    fetch(`${API_URL}/bloqueios/utilizador/check?idBloqueador=${this.activeConversation.otherUser.id}&idBloqueado=${payload.IdUtilizador}`)
                 ]);
 
                 if (!response1.ok || !response2.ok) {
@@ -447,7 +448,7 @@ export default {
 
 
                 if (this.isBlockedByMe) {
-                    const checkResponse = await fetch(`http://localhost:3000/bloqueios/utilizador/check?idBloqueador=${currentUserId}&idBloqueado=${this.selectedUser.id}`, {
+                    const checkResponse = await fetch(`${API_URL}/bloqueios/utilizador/check?idBloqueador=${currentUserId}&idBloqueado=${this.selectedUser.id}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -463,7 +464,7 @@ export default {
                     }
 
                     // Unblock the user using the retrieved block ID
-                    const deleteResponse = await fetch(`http://localhost:3000/bloqueios/utilizador/${blockData.data.IdUtilizadoresBloqueados}`, {
+                    const deleteResponse = await fetch(`${API_URL}/bloqueios/utilizador/${blockData.data.IdUtilizadoresBloqueados}`, {
                         method: 'DELETE',
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -475,7 +476,7 @@ export default {
                     }
                 } else {
                     // Block the user
-                    const createResponse = await fetch('http://localhost:3000/bloqueios/utilizador', {
+                    const createResponse = await fetch(`${API_URL}/bloqueios/utilizador`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

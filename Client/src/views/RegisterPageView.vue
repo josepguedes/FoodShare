@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { API_URL } from '@/api/config';
+
 export default {
     name: "RegisterPageView",
     data() {
@@ -41,7 +43,7 @@ export default {
             this.error = "";
             this.success = "";
             try {
-                const response = await fetch("http://localhost:3000/utilizadores/", {
+                const response = await fetch(`${API_URL}/utilizadores/`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

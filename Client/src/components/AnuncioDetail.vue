@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import { API_URL } from '@/api/config';
 export default {
     name: 'AnuncioDetail',
     data() {
@@ -255,7 +256,7 @@ export default {
 
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 const response = await fetch(
-                    `http://localhost:3000/bloqueios/utilizador/check?idBloqueador=${this.anuncio.IdUtilizadorAnuncio}&idBloqueado=${payload.IdUtilizador}`
+                    `${API_URL}/bloqueios/utilizador/check?idBloqueador=${this.anuncio.IdUtilizadorAnuncio}&idBloqueado=${payload.IdUtilizador}`
                 );
 
                 if (!response.ok) {

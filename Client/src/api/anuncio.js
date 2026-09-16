@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000"; // Ajuste para a URL do seu backend
+import { API_URL } from './config';
 
 export const anunciosService = {
   async getAllAnuncios(page = 1, limit = 12, filters = {}) {

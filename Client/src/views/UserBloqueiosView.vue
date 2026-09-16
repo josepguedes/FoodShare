@@ -35,6 +35,7 @@
 import UserSidebar from '@/components/UserSidebar.vue';
 import UserBloqueadosList from '@/components/UserBloqueadosList.vue';
 import { utilizadorService } from '@/api/utilizador';
+import { API_URL } from '@/api/config';
 
 export default {
     name: 'UserBloqueadosView',
@@ -78,7 +79,7 @@ export default {
                 }
 
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                const response = await fetch(`http://localhost:3000/bloqueios/utilizador?idBloqueador=${payload.IdUtilizador}`, {
+                const response = await fetch(`${API_URL}/bloqueios/utilizador?idBloqueador=${payload.IdUtilizador}`, {
                     headers: {
                         'Authorization': `Bearer ${token}` // Add authorization header
                     }
@@ -120,7 +121,7 @@ export default {
                         return;
                     }
 
-                    const response = await fetch(`http://localhost:3000/bloqueios/utilizador/${idBloqueio}`, {
+                    const response = await fetch(`${API_URL}/bloqueios/utilizador/${idBloqueio}`, {
                         method: 'DELETE',
                         headers: {
                             'Authorization': `Bearer ${token}`

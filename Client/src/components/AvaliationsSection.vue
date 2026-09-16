@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { API_URL } from '@/api/config';
 import { Carousel } from 'bootstrap';
 
 export default {
@@ -130,7 +131,7 @@ export default {
         async fetchAvaliacoes() {
             try {
                 // Updated to include author information in response
-                const response = await fetch(`http://localhost:3000/avaliacoes?idAvaliado=${this.userId}&include=autor`);
+                const response = await fetch(`${API_URL}/avaliacoes?idAvaliado=${this.userId}&include=autor`);
                 const data = await response.json();
                 this.avaliacoes = data.data || [];
             } catch (error) {
