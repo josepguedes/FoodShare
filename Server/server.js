@@ -11,30 +11,16 @@ const host = process.env.NODE_ENV === 'production'
     ? '0.0.0.0'
     : (process.env.HOST || '127.0.0.1');
 
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:5175',
-    'https://food-share-5i559u53x-jose-guedes-projects.vercel.app',
-    'https://food-share-8i559u53x-jose-guedes-projects.vercel.app'
-];
-
-const isVercelPreview = (origin) =>
-    /^https:\/\/food-share(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
-
-
-app.use(cors({
-    origin(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin) || isVercelPreview(origin) || process.env.CORS_ORIGIN === origin) {
-            return callback(null, true);
-        }
-        return callback(new Error('Origin not allowed by CORS'));
-    },
+const corsOptions = {
+    origin: true,
     credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
-}));
-app.options(/.*/, cors());
+};
+
+
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 
 // middleware for ALL routes
