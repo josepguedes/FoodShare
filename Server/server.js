@@ -6,8 +6,10 @@ const multerErrorHandler = require('./middleware/multerErrorHandler');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT;	// use environment variables
-const host = process.env.HOST;
+const port = process.env.PORT || 3000;
+const host = process.env.NODE_ENV === 'production'
+    ? '0.0.0.0'
+    : (process.env.HOST || '127.0.0.1');
 
 
 app.use(cors());
