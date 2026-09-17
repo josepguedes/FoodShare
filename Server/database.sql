@@ -350,6 +350,17 @@ VALUES
   ('Demo Filipe Reis', 'filipe.reis@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0),
   ('Demo Gabriela Luz', 'gabriela.luz@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0);
 
+UPDATE utilizador
+SET ImagemPerfil = CASE
+      WHEN MOD(IdUtilizador, 2) = 0 THEN 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589449/foodshare/demo/foodshare/demo/miguel-sousa.jpg'
+      ELSE 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589449/foodshare/demo/foodshare/demo/ines-martins.jpg'
+    END,
+    CloudinaryId = CASE
+      WHEN MOD(IdUtilizador, 2) = 0 THEN 'foodshare/demo/foodshare/demo/miguel-sousa'
+      ELSE 'foodshare/demo/foodshare/demo/ines-martins'
+    END
+WHERE Email LIKE '%@foodshare.local';
+
 INSERT INTO anuncio
   (IdUtilizadorAnuncio, IdUtilizadorReserva, DataAnuncio, LocalRecolha,
    HorarioRecolha, Preco, DataRecolha, IdEstadoAnuncio, Nome, Descricao,
