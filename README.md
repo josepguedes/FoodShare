@@ -6,6 +6,7 @@ A full-stack web application for sharing and selling food products between users
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Hosted Application](#hosted-application)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -61,6 +62,26 @@ A full-stack web application for sharing and selling food products between users
 - **CORS**: Cross-Origin Resource Sharing middleware
 - **Nodemon**: Development utility for auto-restarting
 
+## Hosted Application
+
+The production frontend is hosted on Vercel:
+
+- **Application:** https://food-share-vert.vercel.app
+- **Repository branch:** `deployment-ready`
+- **Vercel root directory:** `Client`
+- **Build command:** `npm run build`
+- **Output directory:** `dist`
+
+The production database is hosted on TiDB. The backend is deployed separately and connects to TiDB through environment variables. The frontend connects to the deployed backend through `VITE_API_URL`.
+
+For production, configure this variable in Vercel under **Settings > Environment Variables**:
+
+```env
+VITE_API_URL=https://<public-backend-url>
+```
+
+`localhost` is only used for local development. After changing frontend code or environment variables, redeploy from the `deployment-ready` branch.
+
 ## 📦 Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -94,7 +115,7 @@ npm install
 
 ## ⚙️ Configuration
 
-### Database Setup
+### Database Setup (local development only)
 
 1. Create a MySQL database for the project
 2. Import the database schema (if provided) or let Sequelize create tables
@@ -135,12 +156,13 @@ PAYPAL_MODE=sandbox # or live for production
 Create a `.env` file in the `Client` directory (if needed):
 
 ```env
+# Local development only
 VITE_API_URL=http://localhost:3000
 ```
 
 ## 🏃 Running the Application
 
-### Development Mode
+### Development Mode (local only)
 
 #### Start the Backend Server
 
@@ -255,8 +277,10 @@ Projeto-2/
 
 ### Base URL
 ```
-http://localhost:3000
+https://<public-backend-url>
 ```
+
+For local development, use `http://localhost:3000` instead.
 
 ### API Endpoints
 
