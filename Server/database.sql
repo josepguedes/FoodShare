@@ -351,13 +351,20 @@ VALUES
   ('Demo Gabriela Luz', 'gabriela.luz@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0);
 
 UPDATE utilizador
-SET ImagemPerfil = CASE
-      WHEN MOD(IdUtilizador, 2) = 0 THEN 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589449/foodshare/demo/foodshare/demo/miguel-sousa.jpg'
-      ELSE 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589449/foodshare/demo/foodshare/demo/ines-martins.jpg'
+SET ImagemPerfil = CASE Email
+      WHEN 'ana.costa@foodshare.local' THEN 'https://randomuser.me/api/portraits/women/44.jpg'
+      WHEN 'bruno.silva@foodshare.local' THEN 'https://randomuser.me/api/portraits/men/32.jpg'
+      WHEN 'carla.pinto@foodshare.local' THEN 'https://randomuser.me/api/portraits/women/68.jpg'
+      WHEN 'daniel.rocha@foodshare.local' THEN 'https://randomuser.me/api/portraits/men/75.jpg'
+      WHEN 'eva.santos@foodshare.local' THEN 'https://randomuser.me/api/portraits/women/21.jpg'
+      WHEN 'filipe.reis@foodshare.local' THEN 'https://randomuser.me/api/portraits/men/46.jpg'
+      WHEN 'gabriela.luz@foodshare.local' THEN 'https://randomuser.me/api/portraits/women/65.jpg'
+      ELSE ImagemPerfil
     END,
     CloudinaryId = CASE
-      WHEN MOD(IdUtilizador, 2) = 0 THEN 'foodshare/demo/foodshare/demo/miguel-sousa'
-      ELSE 'foodshare/demo/foodshare/demo/ines-martins'
+      WHEN Email LIKE '%@foodshare.local'
+        AND Email NOT IN ('demo@foodshare.local', 'admin@foodshare.local') THEN NULL
+      ELSE CloudinaryId
     END
 WHERE Email LIKE '%@foodshare.local';
 
