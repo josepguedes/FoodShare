@@ -340,15 +340,15 @@ WHERE NOT EXISTS (SELECT 1 FROM anuncio WHERE Nome = 'Pao integral');
 
 -- Dados de demonstração adicionais: 7 utilizadores, 20 anúncios e avaliações variadas.
 INSERT IGNORE INTO utilizador
-  (Nome, Email, Password, Funcao, Classificacao)
+  (Nome, Email, Password, DataRegisto, Funcao, Classificacao)
 VALUES
-  ('Demo Ana Costa', 'ana.costa@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
-  ('Demo Bruno Silva', 'bruno.silva@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
-  ('Demo Carla Pinto', 'carla.pinto@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
-  ('Demo Daniel Rocha', 'daniel.rocha@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
-  ('Demo Eva Santos', 'eva.santos@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
-  ('Demo Filipe Reis', 'filipe.reis@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
-  ('Demo Gabriela Luz', 'gabriela.luz@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0);
+  ('Demo Ana Costa', 'ana.costa@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0),
+  ('Demo Bruno Silva', 'bruno.silva@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0),
+  ('Demo Carla Pinto', 'carla.pinto@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0),
+  ('Demo Daniel Rocha', 'daniel.rocha@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0),
+  ('Demo Eva Santos', 'eva.santos@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0),
+  ('Demo Filipe Reis', 'filipe.reis@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0),
+  ('Demo Gabriela Luz', 'gabriela.luz@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', CURRENT_TIMESTAMP, 'user', 0);
 
 INSERT INTO anuncio
   (IdUtilizadorAnuncio, IdUtilizadorReserva, DataAnuncio, LocalRecolha,
