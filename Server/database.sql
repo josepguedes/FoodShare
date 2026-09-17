@@ -386,6 +386,19 @@ JOIN utilizador owner ON owner.Email = seed.Email
 LEFT JOIN utilizador reserver ON reserver.Email = seed.EmailReserva
 WHERE NOT EXISTS (SELECT 1 FROM anuncio existing WHERE existing.Nome = seed.Nome);
 
+UPDATE anuncio
+SET ImagemAnuncio = CASE IdProdutoCategoria
+      WHEN 1 THEN 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589546/foodshare/products/salada.jpg'
+      WHEN 2 THEN 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589536/foodshare/products/fruta.jpg'
+      WHEN 3 THEN 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589535/foodshare/products/pao.jpg'
+    END,
+    CloudinaryId = CASE IdProdutoCategoria
+      WHEN 1 THEN 'foodshare/products/salada'
+      WHEN 2 THEN 'foodshare/products/fruta'
+      WHEN 3 THEN 'foodshare/products/pao'
+    END
+WHERE Nome LIKE 'Demo %';
+
 INSERT INTO avaliacao
   (IdAnuncio, IdAutor, IdAvaliado, Comentario, Classificacao)
 SELECT anuncio.IdAnuncio, autor.IdUtilizador, avaliado.IdUtilizador,
