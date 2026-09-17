@@ -337,3 +337,85 @@ SELECT 2, CURRENT_TIMESTAMP, 'Valongo', '11:00 - 13:00', 1.25,
        'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589535/foodshare/products/pao.jpg',
        'foodshare/products/pao'
 WHERE NOT EXISTS (SELECT 1 FROM anuncio WHERE Nome = 'Pao integral');
+
+-- Dados de demonstração adicionais: 7 utilizadores, 20 anúncios e avaliações variadas.
+INSERT IGNORE INTO utilizador
+  (Nome, Email, Password, Funcao, Classificacao)
+VALUES
+  ('Demo Ana Costa', 'ana.costa@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
+  ('Demo Bruno Silva', 'bruno.silva@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
+  ('Demo Carla Pinto', 'carla.pinto@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
+  ('Demo Daniel Rocha', 'daniel.rocha@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
+  ('Demo Eva Santos', 'eva.santos@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
+  ('Demo Filipe Reis', 'filipe.reis@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0),
+  ('Demo Gabriela Luz', 'gabriela.luz@foodshare.local', '$2b$10$yK9nVRo/uH04mkM3vPye.u0153UVJyd6DarTStWH30TFfJL9YImLC', 'user', 0);
+
+INSERT INTO anuncio
+  (IdUtilizadorAnuncio, IdUtilizadorReserva, DataAnuncio, LocalRecolha,
+   HorarioRecolha, Preco, DataRecolha, IdEstadoAnuncio, Nome, Descricao,
+   DataValidade, Quantidade, IdProdutoCategoria, ImagemAnuncio, CloudinaryId)
+SELECT owner.IdUtilizador, reserver.IdUtilizador, CURRENT_TIMESTAMP, seed.LocalRecolha,
+       seed.HorarioRecolha, seed.Preco,
+       DATE_ADD(CURRENT_TIMESTAMP, INTERVAL seed.DiasRecolha DAY), seed.IdEstadoAnuncio,
+       seed.Nome, seed.Descricao,
+       DATE_ADD(CURRENT_TIMESTAMP, INTERVAL seed.DiasValidade DAY), seed.Quantidade,
+       seed.IdProdutoCategoria, seed.ImagemAnuncio, seed.CloudinaryId
+FROM (
+  SELECT 'ana.costa@foodshare.local' AS Email, NULL AS EmailReserva, 'Porto' AS LocalRecolha, '09:00 - 11:00' AS HorarioRecolha, 1.00 AS Preco, 3 AS DiasRecolha, 5 AS DiasValidade, 1 AS IdEstadoAnuncio, 'Demo cabaz pequeno de legumes' AS Nome, 'Legumes variados para uma refeicao leve.' AS Descricao, 2 AS Quantidade, 2 AS IdProdutoCategoria, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589534/foodshare/products/legumes.jpg' AS ImagemAnuncio, 'foodshare/products/legumes' AS CloudinaryId
+  UNION ALL SELECT 'ana.costa@foodshare.local', NULL, 'Matosinhos', '16:00 - 18:00', 2.40, 2, 4, 1, 'Demo caixa de tomates', 'Tomates maduros, ideais para saladas e molhos.', 6, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589536/foodshare/products/fruta.jpg', 'foodshare/products/fruta'
+  UNION ALL SELECT 'bruno.silva@foodshare.local', NULL, 'Maia', '18:00 - 20:00', 3.20, 4, 6, 1, 'Demo pao de mistura', 'Pao fresco de mistura feito no proprio dia.', 8, 3, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589535/foodshare/products/pao.jpg', 'foodshare/products/pao'
+  UNION ALL SELECT 'bruno.silva@foodshare.local', NULL, 'Porto', '12:00 - 13:30', 1.75, 1, 3, 1, 'Demo sopa de legumes', 'Sopa caseira pronta a aquecer.', 5, 1, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589536/foodshare/products/sopa.jpg', 'foodshare/products/sopa'
+  UNION ALL SELECT 'bruno.silva@foodshare.local', NULL, 'Gondomar', '10:30 - 12:00', 4.50, -1, 0, 3, 'Demo bolo de cenoura', 'Bolo caseiro de cenoura. Anuncio concluido.', 2, 3, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589540/foodshare/products/bolo.jpg', 'foodshare/products/bolo'
+  UNION ALL SELECT 'carla.pinto@foodshare.local', 'daniel.rocha@foodshare.local', 'Vila Nova de Gaia', '17:00 - 18:30', 2.80, 1, 2, 2, 'Demo saco de macas', 'Macas crocantes de produtores locais.', 5, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589536/foodshare/products/fruta.jpg', 'foodshare/products/fruta'
+  UNION ALL SELECT 'carla.pinto@foodshare.local', NULL, 'Valongo', '14:00 - 16:00', 1.20, 2, 4, 1, 'Demo batata e cebola', 'Selecao de batata e cebola para a semana.', 10, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589534/foodshare/products/legumes.jpg', 'foodshare/products/legumes'
+  UNION ALL SELECT 'carla.pinto@foodshare.local', NULL, 'Porto', '08:00 - 10:00', 2.10, -2, -1, 3, 'Demo couves frescas', 'Couves frescas, recolha ja concluida.', 4, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589534/foodshare/products/legumes.jpg', 'foodshare/products/legumes'
+  UNION ALL SELECT 'daniel.rocha@foodshare.local', NULL, 'Matosinhos', '15:30 - 17:00', 3.90, 5, 7, 1, 'Demo tarte de maca', 'Tarte de maca caseira em fatias.', 4, 3, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589540/foodshare/products/bolo.jpg', 'foodshare/products/bolo'
+  UNION ALL SELECT 'daniel.rocha@foodshare.local', 'eva.santos@foodshare.local', 'Maia', '19:00 - 20:00', 2.60, 2, 3, 2, 'Demo cesta de peras', 'Peras maduras e prontas a consumir.', 5, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589536/foodshare/products/fruta.jpg', 'foodshare/products/fruta'
+  UNION ALL SELECT 'daniel.rocha@foodshare.local', NULL, 'Porto', '11:00 - 12:30', 0.80, 1, 2, 1, 'Demo paezinhos do dia', 'Pequenos paes para o pequeno almoco.', 12, 3, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589535/foodshare/products/pao.jpg', 'foodshare/products/pao'
+  UNION ALL SELECT 'eva.santos@foodshare.local', NULL, 'Gondomar', '13:00 - 15:00', 5.00, 3, 5, 1, 'Demo cabaz familiar', 'Cabaz com legumes e fruta para toda a familia.', 1, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589536/foodshare/products/fruta.jpg', 'foodshare/products/fruta'
+  UNION ALL SELECT 'eva.santos@foodshare.local', NULL, 'Vila Nova de Gaia', '16:30 - 18:00', 2.30, -3, -1, 3, 'Demo salada pronta', 'Salada colorida ja entregue.', 3, 1, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589546/foodshare/products/salada.jpg', 'foodshare/products/salada'
+  UNION ALL SELECT 'eva.santos@foodshare.local', NULL, 'Valongo', '10:00 - 11:30', 1.60, 6, 8, 1, 'Demo farinha e ingredientes', 'Ingredientes secos para receitas caseiras.', 3, 1, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589538/foodshare/products/bolachas.jpg', 'foodshare/products/bolachas'
+  UNION ALL SELECT 'filipe.reis@foodshare.local', NULL, 'Porto', '18:00 - 19:30', 3.40, 2, 4, 1, 'Demo quiche de legumes', 'Quiche caseira com legumes da epoca.', 2, 1, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589546/foodshare/products/salada.jpg', 'foodshare/products/salada'
+  UNION ALL SELECT 'filipe.reis@foodshare.local', 'gabriela.luz@foodshare.local', 'Matosinhos', '12:30 - 14:00', 2.00, 1, 2, 2, 'Demo caixa de morangos', 'Morangos doces e aromaticos.', 5, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589537/foodshare/products/morangos.jpg', 'foodshare/products/morangos'
+  UNION ALL SELECT 'filipe.reis@foodshare.local', NULL, 'Maia', '09:30 - 11:00', 1.40, -4, -2, 3, 'Demo pao integral', 'Pao integral ja recolhido.', 4, 3, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589535/foodshare/products/pao.jpg', 'foodshare/products/pao'
+  UNION ALL SELECT 'gabriela.luz@foodshare.local', NULL, 'Gondomar', '17:30 - 19:00', 2.90, 4, 6, 1, 'Demo legumes para sopa', 'Legumes variados lavados e prontos a usar.', 7, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589534/foodshare/products/legumes.jpg', 'foodshare/products/legumes'
+  UNION ALL SELECT 'gabriela.luz@foodshare.local', NULL, 'Porto', '15:00 - 16:30', 3.80, 7, 9, 1, 'Demo bolo de iogurte', 'Bolo caseiro simples e fofo.', 2, 3, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589540/foodshare/products/bolo.jpg', 'foodshare/products/bolo'
+  UNION ALL SELECT 'gabriela.luz@foodshare.local', NULL, 'Vila Nova de Gaia', '11:30 - 13:00', 1.90, 3, 5, 1, 'Demo fruta para lanche', 'Fruta variada para lanches saudaveis.', 9, 2, 'https://res.cloudinary.com/dxpqnq1og/image/upload/v1789589536/foodshare/products/fruta.jpg', 'foodshare/products/fruta'
+) AS seed
+JOIN utilizador owner ON owner.Email = seed.Email
+LEFT JOIN utilizador reserver ON reserver.Email = seed.EmailReserva
+WHERE NOT EXISTS (SELECT 1 FROM anuncio existing WHERE existing.Nome = seed.Nome);
+
+INSERT INTO avaliacao
+  (IdAnuncio, IdAutor, IdAvaliado, Comentario, Classificacao)
+SELECT anuncio.IdAnuncio, autor.IdUtilizador, avaliado.IdUtilizador,
+       seed.Comentario, seed.Classificacao
+FROM (
+  SELECT 'Demo bolo de cenoura' AS NomeAnuncio, 'ana.costa@foodshare.local' AS EmailAutor, 'bruno.silva@foodshare.local' AS EmailAvaliado, 'Muito saboroso e bem embalado.' AS Comentario, 5 AS Classificacao
+  UNION ALL SELECT 'Demo bolo de cenoura', 'carla.pinto@foodshare.local', 'bruno.silva@foodshare.local', 'Entrega simples e produto fresco.', 4
+  UNION ALL SELECT 'Demo couves frescas', 'daniel.rocha@foodshare.local', 'carla.pinto@foodshare.local', 'Boa qualidade e quantidade generosa.', 5
+  UNION ALL SELECT 'Demo couves frescas', 'eva.santos@foodshare.local', 'carla.pinto@foodshare.local', 'Tudo conforme combinado.', 4
+  UNION ALL SELECT 'Demo salada pronta', 'filipe.reis@foodshare.local', 'eva.santos@foodshare.local', 'Salada muito fresca.', 5
+  UNION ALL SELECT 'Demo pao integral', 'gabriela.luz@foodshare.local', 'filipe.reis@foodshare.local', 'Pao excelente, recomendo.', 5
+  UNION ALL SELECT 'Demo pao integral', 'ana.costa@foodshare.local', 'filipe.reis@foodshare.local', 'Boa experiencia de recolha.', 4
+  UNION ALL SELECT 'Demo tarte de maca', 'bruno.silva@foodshare.local', 'daniel.rocha@foodshare.local', 'Anuncio claro e recolha pontual.', 5
+  UNION ALL SELECT 'Demo saco de macas', 'ana.costa@foodshare.local', 'carla.pinto@foodshare.local', 'Fruta em bom estado.', 4
+) AS seed
+JOIN anuncio ON anuncio.Nome = seed.NomeAnuncio
+JOIN utilizador autor ON autor.Email = seed.EmailAutor
+JOIN utilizador avaliado ON avaliado.Email = seed.EmailAvaliado
+WHERE NOT EXISTS (
+  SELECT 1 FROM avaliacao existing
+  WHERE existing.IdAnuncio = anuncio.IdAnuncio
+    AND existing.IdAutor = autor.IdUtilizador
+    AND existing.IdAvaliado = avaliado.IdUtilizador
+);
+
+UPDATE utilizador user
+LEFT JOIN (
+  SELECT IdAvaliado, ROUND(AVG(Classificacao), 1) AS Media
+  FROM avaliacao
+  GROUP BY IdAvaliado
+) ratings ON ratings.IdAvaliado = user.IdUtilizador
+SET user.Classificacao = COALESCE(ratings.Media, 0)
+WHERE user.Email LIKE '%@foodshare.local';
