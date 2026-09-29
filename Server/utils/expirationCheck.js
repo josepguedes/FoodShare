@@ -2,6 +2,31 @@ const db = require('../models/db');
 const { Op } = require('sequelize');
 
 /**
+ * Ensures all required status records exist in the `estadoanuncio` table to prevent foreign key errors.
+ */
+const ensureEstadoAnuncioExists = async () => {
+    try {
+        const defaultStates = [
+            { IdEstadoAnuncio: 1, EstadoAnuncio: "Disponível" },
+            { IdEstadoAnuncio: 2, EstadoAnuncio: "Reservado" },
+            { IdEstadoAnuncio: 3, EstadoAnuncio: "Concluído" },
+            { IdEstadoAnuncio: 4, EstadoAnuncio: "Cancelado" },
+            { IdEstadoAnuncio: 5, EstadoAnuncio: "Expirado" },
+            { IdEstadoAnuncio: 6, EstadoAnuncio: "Por Pagar" },
+        ];
+
+        for (const estado of defaultStates) {
+            await db.EstadoAnuncio.findOrCreate({
+                where: { IdEstadoAnuncio: estado.IdEstadoAnuncio },
+                defaults: estado
+            });
+        }
+    } catch (err) {
+        console.error('[ExpirationCheck] Erro ao garantir estados de anúncio:', err);
+    }
+};
+
+/**
  * Checks all active or reserved announcements to see if their expiration date (DataValidade) has passed.
  * If expired:
  * 1. Changes IdEstadoAnuncio to 5 ('Expirado').
@@ -10,6 +35,9 @@ const { Op } = require('sequelize');
  */
 const checkAndExpireAnuncios = async () => {
     try {
+        // Ensure status 5 ('Expirado') exists in DB to prevent foreign key constraints
+        await ensureEstadoAnuncioExists();
+
         const now = new Date();
 
         // Find all announcements in state 1 (Ativo) or 2 (Reservado) with DataValidade before now
