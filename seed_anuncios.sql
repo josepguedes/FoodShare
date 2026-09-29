@@ -1,6 +1,7 @@
 -- ============================================================
 -- SQL Script: Limpeza e Inserção de Anúncios e Avaliações (Reviews)
 -- Projeto: FoodShare
+-- Compatible with TiDB / MySQL
 -- ============================================================
 
 -- 1. Desativar verificação de chaves estrangeiras
@@ -9,7 +10,6 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- 2. Limpar tabelas de avaliações e anúncios
 TRUNCATE TABLE `avaliacao`;
 DELETE FROM `anuncio`;
-ALTER TABLE `anuncio` AUTO_INCREMENT = 1;
 
 -- 3. Reativar verificação de chaves estrangeiras
 SET FOREIGN_KEY_CHECKS = 1;
