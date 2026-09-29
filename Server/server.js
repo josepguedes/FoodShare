@@ -95,6 +95,16 @@ app.use((err, req, res, next) => {
     res.status(err.statusCode || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
+const { checkAndExpireAnuncios } = require('./utils/expirationCheck');
+
 app.listen(port, host, () => {
     console.log(`App listening at http://${host}:${port}/`);
+    
+    // Execute expiration check on server start
+    checkAndExpireAnuncios();
+    
+    // Schedule periodic check every 15 minutes (15 * 60 * 1000 ms)
+    setInterval(() => {
+        checkAndExpireAnuncios();
+    }, 15 * 60 * 1000);
 });

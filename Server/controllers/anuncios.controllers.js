@@ -3,6 +3,7 @@ const Anuncio = db.Anuncio;
 const UtilizadorBloqueio = db.UtilizadorBloqueio;
 const { Op, Sequelize } = require("sequelize");
 const { ErrorHandler } = require("../utils/error.js");
+const { checkAndExpireAnuncios } = require("../utils/expirationCheck.js");
 const {
   cloudinary,
   uploadToCloudinary,
@@ -11,6 +12,9 @@ const {
 // Listar todos os anúncios com paginação e filtros
 const getAllAnuncios = async (req, res, next) => {
   try {
+    // Run expiration check before fetching listings
+    await checkAndExpireAnuncios();
+
     const {
       categoria,
       nome,
