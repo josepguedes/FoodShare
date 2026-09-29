@@ -1,6 +1,7 @@
 const db = require("../models/db.js");
 const Avaliacao = db.Avaliacao;
 const { ErrorHandler } = require("../utils/error.js");
+const { recalculateUserRating } = require("../utils/ratingSync.js");
 
 // Listar todas as avaliações com paginação e filtros
 const getAllAvaliacoes = async (req, res, next) => {
@@ -376,6 +377,9 @@ const updateAvaliacao = async (req, res, next) => {
       Classificacao: Classificacao || avaliacao.Classificacao,
     });
 
+    // Recalculate user rating
+    await recalculateUserRating(avaliacao.IdAvaliado);
+
     return res.status(200).json({
       message: "Avaliação atualizada com sucesso",
       data: avaliacao,
@@ -446,8 +450,13 @@ const deleteAvaliacao = async (req, res, next) => {
       });
     }
 
+    const idAvaliado = avaliacao.IdAvaliado;
+
     // Delete evaluation
     await avaliacao.destroy();
+
+    // Recalculate user rating
+    await recalculateUserRating(idAvaliado);
 
     return res.status(200).json({
       message: "Avaliação eliminada com sucesso",

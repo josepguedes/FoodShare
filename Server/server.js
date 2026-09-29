@@ -96,12 +96,14 @@ app.use((err, req, res, next) => {
 });
 
 const { checkAndExpireAnuncios } = require('./utils/expirationCheck');
+const { syncAllUserRatings } = require('./utils/ratingSync');
 
 app.listen(port, host, () => {
     console.log(`App listening at http://${host}:${port}/`);
     
-    // Execute expiration check on server start
+    // Execute expiration check and user ratings sync on server start
     checkAndExpireAnuncios();
+    syncAllUserRatings();
     
     // Schedule periodic check every 15 minutes (15 * 60 * 1000 ms)
     setInterval(() => {
